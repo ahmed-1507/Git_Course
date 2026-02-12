@@ -1,0 +1,5 @@
+
+"id","name","skills_ids:id"    ======> skills_ids => field many2many
+employee_1,"osama","skill_1,skill_2"
+employee_2,"mohamed","skill_2,skill_3"
+employee_3,"ashraf","skill_1,skill_2,skill_3,skill_4"

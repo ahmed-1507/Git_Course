@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="weekday_1" model="hospital.weekday">
+            <field name="name">Saturday</field>
+        </record>
+
+        <record id="weekday_2" model="hospital.weekday">
+            <field name="name">Sunday</field>
+        </record>
+
+        <record id="weekday_3" model="hospital.weekday">
+            <field name="name">Monday</field>
+        </record>
+
+        <record id="weekday_4" model="hospital.weekday">
+            <field name="name">Tuesday</field>
+        </record>
+
+        <record id="weekday_5" model="hospital.weekday">
+            <field name="name">Wednesday</field>
+        </record>
+
+        <record id="weekday_6" model="hospital.weekday">
+            <field name="name">Thursday</field>
+        </record>
+
+        <record id="weekday_7" model="hospital.weekday">
+            <field name="name">Friday</field>
+        </record>
+
+
+
+
+    </data>
+</odoo>

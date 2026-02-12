@@ -1,0 +1,116 @@
+<odoo>
+    <data>
+
+
+
+          <!--        How to add group as combobox layout -->
+        <!--        بمعني ازاي تخلي الجروبات عاملهdropdown list وانت تختار منهم جروب واحد-->
+        <!--        مع العلم ان الجروبات هتتقسم من الاضعف للاقوي وكل جروب هياخد صلاحيته + صلاحية الجروب اللي قبله ف القايمه-->
+
+        <record id="hospital_management_main_category" model="ir.module.category">
+            <field name="name">Hospital Management</field>
+        </record>
+
+        <record id="hospital_management_sub_category" model="ir.module.category">
+        <field name="name">Hospital Management</field>
+        <field name="parent_id" ref="hospital_management.hospital_management_main_category"/>
+        </record>
+
+
+
+        <record id="hospital_users_group" model="res.groups">
+            <field name="name">Hospital Users</field>
+            <field name="category_id" ref="hospital_management.hospital_management_sub_category"/>
+        </record>
+
+        <record id="hospital_employees_group" model="res.groups">
+            <field name="name">Hospital Employees</field>
+            <field name="category_id" ref="hospital_management.hospital_management_sub_category"/>
+            <field name="implied_ids" eval="[(6,0, [ref('hospital_management.hospital_users_group')])]"/>
+        </record>
+
+        <record id="hospital_manager_group" model="res.groups">
+            <field name="name">Hospital Manager</field>
+            <field name="category_id" ref="hospital_management.hospital_management_sub_category"/>
+<!--            ref => لنفس الريكورد integer id in data base وهو هيحوله لل xmlبتاع ريكورد في ال id معناها اني هديله ال-->
+            <field name="implied_ids" eval="[(4, ref('hospital_employees_group'))]"/>
+            <!--صلاحيات المدير هتاخد معاها صلاحيات الموظف -->
+        </record>
+
+
+
+         <!--        How to override/reuse security group category-->
+        <!--        هنفترض اننا عايزين نضيف جروب تحت ال Technical Category-->
+        <!--        odoo => addons => base => data => ir_module_category_data-->
+        <!--        ونعمل سيرش باسم الكاتيجري وناخد ال id بتاعه-->
+        <record id="delete_employee_group" model="res.groups">
+            <field name="name">Delete Employee</field>
+            <field name="category_id" ref="base.module_category_hidden"/>    <!-- field many2one-->
+        </record>
+
+
+
+        <record id="can_delete_employee_rule" model="ir.rule">
+            <!-- الموديل ثابت ومعناه ان فيه جروب معين هخليه يشوف فيلدات معينه -->
+            <field name="name">can delete employee</field>
+            <field name="model_id" ref="model_hospital_doctor"/>
+            <field name="groups" eval="[(4 ,ref('delete_employee_group'))]"/>
+            <!-- Many2Many relation -->
+            <field name="domain_force">[(1 , '=' ,1)]</field>
+<!--            <field name="domain_force">[('create_uid' , '=' ,user.id)]</field>-->
+<!--            user ==>وقيمته اليوزر اللي فاتح حاليا ir.rule متغير موجود في تيبل ال-->
+            <field name="perm_read" eval="False"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+
+    </data>
+</odoo>
+
+
+                <!--        for access rights  csv نفس طريقة الفايل ال -->
+        <!--            <record id="printing_server_group_manager" model="ir.model.access">-->
+        <!--            <field name="name">Printing Server Manager</field>-->
+        <!--            <field name="model_id" ref="hospital_management.model_printing_server"/>-->
+        <!--            <field name="group_id" ref="hospital_management.printing_group_manager"/>-->
+        <!--            <field eval="1" name="perm_read"/>-->
+        <!--            <field eval="1" name="perm_unlink"/>-->
+        <!--            <field eval="1" name="perm_write"/>-->
+        <!--            <field eval="1" name="perm_create"/>-->
+        <!--            </record>-->
+
+
+        <!--        ================================================================================-->
+        <!--        [[[[[[[ read about commands ===> odoo ==> fields.py ==> search about 'command' ]]]]]]]-->
+
+
+        <!--     field mamy2one or one2many   use ref-->
+        <!--     field many2many              use eval-->
+
+
+<!--         ================================================================================== -->
+
+        <!--        How to extend | Inherit groups in Odoo | implied_ids groups-->
+        <!--        بمعني انه لو عايز اخلي جروب معين واخد صلاحيات جروبات تانيه ف ساعتها اول ما اختار الجروب المعين ده تلقائي هيشتغل-->
+        <!--        معاه صلاحيات الجروبات التانبه-->
+        <!--<record id="test_inherit_group" model="res.groups">-->
+        <!--<field name="name">Test inherit group</field>-->
+        <!--<field name="category_id" ref="base.module_category_hidden"/>    &lt;!&ndash; field many2one&ndash;&gt;-->
+        <!--<field name="implied_ids" eval="[(6,0, [ref('law_office.school_user'),ref('law_office.school_manager')])]"/>-->
+        <!--</record>-->
+
+
+        <!--        ممكن تضيف صلاحية لجروب معين علي field,menuitem,page,notebook,group of fields عن طريق :-->
+        <!--        groups="law_office.test_group_senior"-->
+
+        <!--        وممكن تضيف صلاحيه لجروب معين علي اكشن ريكورج او فيو ريكورد عن طريق :-->
+        <!--<field name="groups_id" eval="[(4,ref('base.group_user'))]"/>-->
+        <!--        مثال :-->
+        <!--        <record id="view_move_form_inherit_purchase" model="ir.ui.view">-->
+        <!--        <field name="name">account.move.inherit.purchase</field>-->
+        <!--        <field name="model">account.move</field>-->
+        <!--        <field name="inherit_id" ref="account.view_move_form"/>-->
+        <!--        <field name="groups_id" eval="[(4, ref('purchase.group_purchase_user'))]"/>-->
+        <!--        <record/>-->

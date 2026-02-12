@@ -1,0 +1,60 @@
+<odoo>
+    <data>
+
+        <record id="wizard_form" model="ir.ui.view">
+            <field name="name">wizard form</field>
+            <field name="model">wizard.employee</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="is_accepted"/>
+                            <field name="salary"/>
+                            <field name="employee_id"/>
+                        </group>
+                        <footer>
+                            <button name="Save_employee_values" type="object" string="create a new employee" class="btn-primary" />
+                            <button name="update_employee_name" type="object" string="update_employee" class="btn-primary" />
+                            <button special="cancel"  string="Discard" class="btn-secondary"/>
+                        </footer>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+        <record id="wizard_action" model="ir.actions.act_window">
+            <field name="name">new employee</field>
+            <field name="res_model">wizard.employee</field>
+            <field name="view_mode">form</field>
+             <field name="target">new</field>
+     <!--  target => new  form مش popup  عشان لما اضغط عليها تفتحلي -->
+        </record>
+
+
+
+
+<!--        to open wizard from action menu اللي بيبقي فيها السيرفر اكشن والمسح والدوبليكيت-->
+         <record id="action_open_wizard" model="ir.actions.act_window">
+            <field name="name">open wizard</field>
+            <field name="res_model">wizard.employee</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="law_office.wizard_form"/>
+             <field name="target">new</field>
+            <field name="binding_model_id" ref="model_manager_office"/>
+            <field name="binding_view_types">list,form</field>      <!--             ولو عايزها في الفورم فيو بس همسح ال list-->
+
+        </record>
+
+
+        <menuitem id="action_open_employee_wizard" name="open wizard" action="law_office.wizard_action" parent="law_office.manager_menu"/>
+
+
+    </data>
+</odoo>
+
+
+

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="manager_xlsx_data" model="ir.actions.report">
+            <field name="name">manager_xlsx_data</field>
+            <field name="model">manager.office</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">law_office.manager_xlsx_documents</field>
+            <field name="report_file">law_office.manager_xlsx_documents</field>
+            <field name="binding_model_id" ref="model_manager_office"/>
+            <field name="binding_type">report</field>
+        </record>
+
+
+<!--        <template id="manager_xlsx_documents">-->
+<!--            <t t-call="web.html_container">-->
+<!--                <t t-call="web.external_layout">-->
+<!--                    <div class="page">-->
+<!--                        <div class="oe_structure"/>-->
+<!--                        <div class="row">-->
+<!--                            <table class="table table-condensed">-->
+<!--                                <thead>-->
+<!--                                    <tr>-->
+<!--                                        <th style="text-align:left;">-->
+<!--                                            <strong>Manager :</strong>-->
+<!--                                        </th>-->
+<!--                                        <th style="text-align:left;">-->
+<!--                                            <strong>Date :</strong>-->
+<!--                                        </th>-->
+<!--                                        <th style="text-align:left;">-->
+<!--                                            <strong>Description :</strong>-->
+<!--                                        </th>-->
+<!--                                    </tr>-->
+<!--                                </thead>-->
+
+<!--                                <tbody>-->
+<!--                                    <t t-foreach="manager_report" t-as="o">-->
+<!--                                        <tr>-->
+<!--                                            <td style="text-align:left;">-->
+<!--                                                <t t-esc="o['manager_id']['name']"/>-->
+<!--                                            </td>-->
+<!--                                            <td style="text-align:left;">-->
+<!--                                                <t t-esc="o['bill_date']"/>-->
+<!--                                            </td>-->
+<!--                                            <td style="text-align:left;">-->
+<!--                                                <t t-esc="o['description']"/>-->
+<!--                                            </td>-->
+<!--                                        </tr>-->
+<!--                                    </t>-->
+<!--                                </tbody>-->
+<!--                            </table>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </t>-->
+<!--            </t>-->
+
+<!--        </template>-->
+
+    </data>
+</odoo>

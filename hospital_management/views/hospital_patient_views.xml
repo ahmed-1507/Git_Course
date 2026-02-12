@@ -1,0 +1,79 @@
+<odoo>
+    <data>
+        <record id="hospital_patient_view_form" model="ir.ui.view">
+            <field name="name">hospital.patient.view.form</field>
+            <field name="model">hospital.patient</field>
+            <field name="arch" type="xml">
+                <form>
+                    <!--<form create="0" edit="0" delete="0" duplicate=0>     for access permissions like security -->
+                    <sheet>
+                        <header>
+                            <button name="view_lab_results" type="object" string="View Lab Results"
+                                    class="fa fa-check-square btn-success"/>
+                            <button name="view_patient_prescription" type="object" string="View prescription"
+                                    class="oe_stat_button"/>
+                        </header>
+                        <!--                        <div class="oe_button_box" name="button_box">-->
+
+                        <!--                            <button name="search_counts" type="object" class="oe_stat_button"-->
+                        <!--                                    icon="fa-pencil-square-o">-->
+                        <!--                                <field name="so_method" widget="statinfo"/>-->
+                        <!--                            </button>-->
+                        <!--                        </div>-->
+                        <group>
+                            <group string="Personal data">
+                                <field name="name"/>
+                                <field name="birthdate"/>
+                                <field name="age"/>
+                                <field name="full_age"/>
+                                <field name="ref"/>
+                                <!--<field name="float_digits" options="{'field_digits': True}"/>-->
+                            </group>
+                            <group string="Social data">
+                                <field name="email"/>
+                                <field name="country"/>
+                                <field name="address"/>
+                                <field name="gender" widget="radio"/>
+                                <field name="lab_results_url"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="hospital_patient_view_tree" model="ir.ui.view">
+            <field name="name">hospital.patient.view.tree</field>
+            <field name="model">hospital.patient</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <!--   <tree create="0" edit="0" delete="0">     for access permissions like security -->
+                    <field name="name"/>
+                    <field name="age" decoration-info="age&lt;25" decoration-danger="age&gt;25" widget="badge"/>
+                    <field name="email"/>
+                </tree>
+            </field>
+
+            <!--            decoration-muted   ===> normal-->
+            <!--            decoration-warning ===> orange-->
+            <!--            decoration-info    ===> light blue-->
+            <!--            decoration-success ===> green-->
+            <!--            decoration-danger  ===> red -->
+
+
+        </record>
+        <record id="hospital_patient_view_action" model="ir.actions.act_window">
+            <field name="name">hospital patient action</field>
+            <field name="res_model">hospital.patient</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Patient Record, the first step of a new Patient!
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

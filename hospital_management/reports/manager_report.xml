@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+        <!--        How to create custom header and footer -->
+
+        <!--        لو عملت تيمبلت هيدر وفوتر ليك وعايز تضيفها في التقرير هتحطها مكان ال -->
+        <!--        <t t-call="web.external_layout">    ===>  <t t-call="hospital_management.custom_header_footer_template">     -->
+
+        <template id="custom_header_footer_template">
+            <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name"
+                 t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <t t-raw="0"/>
+
+            </div>
+            <t t-if="env.company.header_style=='image'">
+
+                <div class="header">
+                    <table t-if="env.company.image_header" style="width:100%">
+                        <img t-att-src="image_data_uri(env.company.image_header)"
+                             t-att-style="'height:' + str(env.company.image_header_height) + 'px;width:' + str(env.company.image_header_width) + '%;'"
+                             alt="Logo"/>
+                    </table>
+                    <t t-call="dynamic_template_design.pdf_watermark_template"/>
+                </div>
+            </t>
+
+            <t t-if="env.company.header_style=='design'">
+                <t t-if="env.company.image_design_header=='left_right'">
+                    <div class="header">
+                        <div class="header-en"
+                             style="float: left;  direction:ltr !important;  ;  width: 33%; text-align: left;color: #0a2c51">
+                            <table style="width:100%;color: #0a2c51;  ">
+                                <img t-if="env.company.left_image_header"
+                                     t-att-src="image_data_uri(env.company.left_image_header)"
+                                     style="height:120px;width:140px;" alt="Logo"/>
+                                <br t-if="env.company.left_image_header"/>
+                            </table>
+
+
+                            <table>
+
+
+                                <t t-foreach="env.company.header_data" t-as="line">
+                                    <t t-if="line.type=='fixed'">
+                                        <tr>
+                                            <t t-if="line.font_bold">
+                                                <strong t-att-style="'font-size:' + str(line.font_size) + 'px;'">
+                                                    <span t-esc="line.left_label"/>
+                                                </strong>
+
+                                            </t>
+                                            <t t-else="">
+                                                <span t-esc="line.left_label"
+                                                      t-att-style="'font-size:' + str(line.font_size) + 'px;'"/>
+
+                                            </t>
+                                        </tr>
+                                        <br/>
+                                    </t>
+                                    <t t-if="line.type=='dynamic'">
+                                        <tr>
+                                            <t t-if="line.font_bold">
+                                                <strong t-att-style="'font-size:' + str(line.font_size) + 'px;'">
+                                                    <span t-esc="line.left_label"/>
+                                                </strong>
+
+                                            </t>
+                                            <t t-else="">
+                                                <span t-esc="line.left_label"
+                                                      t-att-style="'font-size:' + str(line.font_size) + 'px;'"/>
+
+                                            </t>
+                                            :
+                                            <span t-esc="env.company.get_field_value(field_name=line.field_id.name, key=line.key, active_id=env.company.id)"/>
+                                        </tr>
+
+                                        <br/>
+                                    </t>
+                                </t>
+
+                            </table>
+                        </div>
+                        <div class="header-ar"
+                             style="float: right;width: 34%;text-align: right; direction=rtl; color: #0a2c51;">
+                            <table dir="rtl" style="text-align:right;width:100%; font-size:14px;color: #0a2c51; ">
+                                <img t-if="env.company.right_image_header"
+                                     t-att-src="image_data_uri(env.company.right_image_header)"
+                                     style="height:100px;width:120px;" alt="Logo"/>
+
+                            </table>
+                            <br t-if="env.company.right_image_header"/>
+
+                            <table dir="rtl"
+                                   style="text-align:right;width:100%;font-family:Almarai-Bold ; font-size:15px;color: #0a2c51;">
+                                <t t-foreach="env.company.header_data" t-as="line">
+                                    <t t-if="line.type=='fixed'">
+                                        <tr>
+                                            <t t-if="line.font_bold">
+                                                <strong t-att-style="'font-size:' + str(line.font_size) + 'px;'">
+                                                    <span t-esc="line.right_label"/>
+                                                </strong>
+
+                                            </t>
+                                            <t t-else="">
+                                                <span t-esc="line.right_label"
+                                                      t-att-style="'font-size:' + str(line.font_size) + 'px;'"/>
+
+                                            </t>
+
+                                        </tr>
+                                        <br/>
+                                    </t>
+                                    <t t-if="line.type=='dynamic'">
+                                        <tr>
+
+
+                                            <span t-esc="env.company.get_field_value(field_name=line.field_id.name, key=line.key, active_id=env.company.id)"/>
+                                            :
+                                            <t t-if="line.font_bold">
+                                                <strong t-att-style="'font-size:' + str(line.font_size) + 'px;'">
+                                                    <span t-esc="line.right_label"/>
+                                                </strong>
+
+                                            </t>
+                                            <t t-else="">
+                                                <span t-esc="line.right_label"
+                                                      t-att-style="'font-size:' + str(line.font_size) + 'px;'"/>
+
+                                            </t>
+                                        </tr>
+                                        <br/>
+                                    </t>
+                                </t>
+                            </table>
+
+                        </div>
+                        <div class="col-xs-12">
+                        </div>
+
+                        <t t-call="dynamic_template_design.pdf_watermark_template"/>
+
+                    </div>
+
+                </t>
+                <t t-else="">
+                    <div class="header">
+                        <div class="header-en"
+                             style="float: left;  direction:ltr !important;  ;  width: 33%; text-align: left;color: #0a2c51">
+                            <table>
+                                <t t-foreach="env.company.header_data" t-as="line">
+                                    <t t-if="line.type=='fixed'">
+                                        <tr>
+                                            <t t-if="line.font_bold">
+                                                <strong t-att-style="'font-size:' + str(line.font_size) + 'px;'">
+                                                    <span t-esc="line.left_label"/>
+                                                </strong>
+
+                                            </t>
+                                            <t t-else="">
+                                                <span t-esc="line.left_label"
+                                                      t-att-style="'font-size:' + str(line.font_size) + 'px;'"/>
+
+                                            </t>
+                                        </tr>
+                                        <br/>
+                                    </t>
+                                    <t t-if="line.type=='dynamic'">
+                                        <tr>
+                                            <t t-if="line.font_bold">
+                                                <strong t-att-style="'font-size:' + str(line.font_size) + 'px;'">
+                                                    <span t-esc="line.left_label"/>
+                                                </strong>
+
+                                            </t>
+                                            <t t-else="">
+                                                <span t-esc="line.left_label"
+                                                      t-att-style="'font-size:' + str(line.font_size) + 'px;'"/>
+
+                                            </t>
+                                            :
+                                            <span t-esc="env.company.get_field_value(field_name=line.field_id.name, key=line.key, active_id=env.company.id)"/>
+                                        </tr>
+
+                                        <br/>
+                                    </t>
+                                </t>
+
+                            </table>
+                        </div>
+
+
+                        <div class="header-ar"
+                             style="float: right;width: 33%;text-align: right; direction=rtl; color: #0a2c51;">
+
+                            <table dir="rtl"
+                                   style="text-align:right;width:100%;font-family:Almarai-Bold ; font-size:15px;color: #0a2c51;">
+                                <t t-foreach="env.company.header_data" t-as="line">
+                                    <t t-if="line.type=='fixed'">
+                                        <tr>
+                                            <t t-if="line.font_bold">
+                                                <strong t-att-style="'font-size:' + str(line.font_size) + 'px;'">
+                                                    <span t-esc="line.right_label"/>
+                                                </strong>
+
+                                            </t>
+                                            <t t-else="">
+                                                <span t-esc="line.right_label"
+                                                      t-att-style="'font-size:' + str(line.font_size) + 'px;'"/>
+
+                                            </t>
+
+                                        </tr>
+                                        <br/>
+                                    </t>
+                                    <t t-if="line.type=='dynamic'">
+                                        <tr>
+
+
+                                            <span t-esc="env.company.get_field_value(field_name=line.field_id.name, key=line.key, active_id=env.company.id)"/>
+                                            :
+                                            <t t-if="line.font_bold">
+                                                <strong t-att-style="'font-size:' + str(line.font_size) + 'px;'">
+                                                    <span t-esc="line.right_label"/>
+                                                </strong>
+
+                                            </t>
+                                            <t t-else="">
+                                                <span t-esc="line.right_label"
+                                                      t-att-style="'font-size:' + str(line.font_size) + 'px;'"/>
+
+                                            </t>
+                                        </tr>
+
+                                        <br/>
+                                    </t>
+                                </t>
+                            </table>
+                        </div>
+
+
+                        <div class="header-center"
+                             style="float: right;width: 33%;text-align: center; direction=center; color: #0a2c51;">
+                            <table>
+                                <img t-if="env.company.center_image_header"
+                                     t-att-src="image_data_uri(env.company.center_image_header)"
+                                     style="height:100px;width:120px;" alt="Logo"/>
+
+                            </table>
+                        </div>
+                        <t t-call="dynamic_template_design.pdf_watermark_template"/>
+
+                    </div>
+                </t>
+            </t>
+
+            <div class="footer" style="font-size:16px">
+                <t t-if="env.company.footer_style=='image'">
+
+                    <hr style="color:#1c9dd9;width:97%;height:2px;background:#1c9dd9"/>
+
+                    <table t-if="env.company.image_footer" style="width:100%">
+                        <img t-att-src="image_data_uri(env.company.image_footer)"
+                             t-att-style="'height:' + str(env.company.image_footer_height) + 'px;width:' + str(env.company.image_footer_width) + '%;'"
+                             alt="Logo"/>
+                    </table>
+
+
+                    <!--                        How to add page numer in footer-->
+                    <div class="text-end page_number text-center">
+
+                        Page:
+                        <span class="page"/>
+                        of
+                        <span class="topage"/>
+
+                    </div>
+
+
+                </t>
+                <t t-if="env.company.footer_style=='design'">
+                    <hr style="color:#1c9dd9;width:97%;height:2px;background:#1c9dd9"/>
+
+                    <table style="width:100%">
+                        <t t-set="icon_classes" t-value="{
+                'phone': 'fa fa-phone',
+                'email': 'fa fa-envelope',
+                'web': 'fa fa-globe',
+                'address': 'fa fa-map-marker',
+                'fax': 'fa fa-fax',
+                'mobile': 'fa fa-mobile',
+                'bank': 'fa fa-university',
+
+                'invoice': 'fa fa-file-text',
+                'payment': 'fa fa-credit-card',
+                'signature': 'fa fa-pencil',
+                'company': 'fa fa-building',
+                'support': 'fa fa-life-ring',
+                'terms': 'fa fa-file-contract',
+                'privacy': 'fa fa-shield'
+            }"/>
+                        <t t-foreach="env.company.footer_data" t-as="line">
+                            <td style="text-align:center;border:0px">
+                                <p>
+
+                                    <t t-if="line.type in icon_classes">
+                                        <i t-att-class="icon_classes[line.type]" style="font-size:20px;color:#1c9dd9;"/>
+                                        <strong>
+                                            <span t-esc="env.company.get_field_value(field_name=line.field_id.name, key=line.key, active_id=env.company.id)"/>
+                                        </strong>
+                                    </t>
+
+                                    <t t-else="">
+                                        <span t-esc="line.label"/>
+                                        <strong>
+                                            <span t-esc="env.company.get_field_value(field_name=line.field_id.name, key=line.key, active_id=env.company.id)"/>
+                                        </strong>
+                                    </t>
+                                </p>
+                            </td>
+                        </t>
+                    </table>
+
+
+                    <!--                        How to add page numer in footer-->
+
+                    <div class="text-end page_number text-center">
+                        <div>
+                            <h5>Time of reporting:
+                                <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%m/%d/%Y %H:%M:%S')"/>
+                            </h5>
+
+                        </div>
+                        <div class="text-muted">
+                            Page:
+                            <span class="page"/>
+                            of
+                            <span class="topage"/>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </template>
+
+
+        <!--        =======================================================================================================-->
+
+        <!--        for paper format -->
+
+        <!--        <record id="paperformat_sale_order_report" model="report.paperformat">-->
+        <!--            <field name="name">Sale Order Report</field>-->
+        <!--            <field name="default" eval="True"/>-->
+        <!--            <field name="format">A4</field>-->
+        <!--            <field name="orientation">Portrait</field>-->
+        <!--            <field name="margin_top">60</field>-->
+        <!--            <field name="margin_bottom">15</field>-->
+        <!--            <field name="margin_left">0</field>-->
+        <!--            <field name="margin_right">0</field>-->
+        <!--            <field name="header_line" eval="False"/>-->
+        <!--            <field name="header_spacing">60</field>-->
+        <!--            <field name="dpi">90</field>-->
+        <!--        </record>-->
+
+
+        <!--        =======================================================================================================-->
+        <!--        لو قالي ايرور اسمه boolean object isnt subscribtable -->
+        <!--        استخدم جوه التاجه اللي عامله ايرورو -->
+        <!--        t-if="doc.field_name"-->
+        <!--        =======================================================================================================-->
+
+
+        <record id="manager_report" model="ir.actions.report">
+            <field name="name">manager_report</field>
+            <field name="model">manager.office</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">law_office.manager_document</field>
+            <field name="report_file">law_office.manager_document</field>
+            <field name="binding_model_id" ref="model_manager_office"/>
+            <field name="binding_type">report</field>
+        </record>
+
+
+        <template id="manager_document">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div class="oe_structure"/>
+                            <div class="row">
+                                <td width="120%">
+                                    <p style="text-align:center;padding-top:10px;">
+                                        <img t-if="not doc.image" t-att-src="'/web/static/src/img/placeholder.png'"
+                                             height="180" width="180" border="1"/>
+                                        <img t-if="doc.image"
+                                             t-att-src="'data:image/png;base64,%s' % to_text(doc.image)" height="180"
+                                             width="180" border="1"/>
+                                    </p>
+                                    <p style="text-align:center;">
+                                        <h2>
+                                            <strong>
+                                                <span t-field="doc.name"/>
+                                            </strong>
+                                        </h2>
+                                    </p>
+                                </td>
+                                <center>
+                                    <div class="col-xs-8" style="margin:auto">
+                                        <table class="table table-condensed"
+                                               style="border: 3px solid black !important;">
+                                            <tr>
+                                                <td width="120%">
+                                                    <p style="text-align:center;padding-top:10px;">
+                                                        <img t-if="not doc.image"
+                                                             t-att-src="'/web/static/src/img/placeholder.png'"
+                                                             height="180" width="180" border="1"/>
+                                                        <img t-if="doc.image"
+                                                             t-att-src="'data:image/png;base64,%s' % to_text(doc.image)"
+                                                             height="180" width="180" border="1"/>
+
+                                                        <!--                                                        or-->
+
+                                                        <img t-if="doc.image" t-att-src="image_data_uri(doc.image)"
+                                                             style="height:135px;width:216px;"
+                                                             alt="Not Found"/>
+
+                                                        <!--                                                        or-->
+
+                                                        <span t-field="doc.image"
+                                                              t-options="{'widget': 'image', 'img_style': 'max-height:50pt;max-width:100%;', 'width': 95, 'height': 40}"
+                                                              role="img" t-att-title="doc.name"/>
+
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </center>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

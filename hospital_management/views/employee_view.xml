@@ -1,0 +1,252 @@
+<odoo>
+    <data>
+<!--         <record id="action_server_mark_as_accept" model="ir.actions.server">-->
+<!--            <field name="name">Mark As Accept</field>-->
+<!--             <field name="type">ir.actions.server</field>-->
+<!--            <field name="model_id" ref="model_employee.office"/>-->
+<!--            <field name="binding_model_id" ref="model_employee.office"/>-->
+<!--            <field name="binding_view_types">form,list</field>-->
+<!--            <field name="state">code</field>-->
+<!--            <field name="code">-->
+<!--                 for record in records :-->
+<!--                     if record.state == 'new' :-->
+<!--                        record.set_accepted()-->
+<!--            </field>-->
+<!--        </record>-->
+
+
+
+
+        <record id="ir_cron_send_quarterly_matching" model="ir.cron">
+            <field name="name">Customer Quarterly Matching</field>
+            <field name="model_id" ref="model_customer_matching_balance"/>
+            <field name="state">code</field>
+            <field name="code">model.send_quarterly_emails()</field>
+            <field name="interval_number">4</field>   هتتفذ كل 4 شهور
+            <field name="interval_type">months</field>     هتتنفذ بالشهر
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="True"/>
+            <field name="nextcall" eval="(DateTime(DateTime.now().year, DateTime.now().month, 3) + relativedelta(months=3, days=-4))"/>
+        </record>
+
+
+        <record id="employee_form" model="ir.ui.view">
+            <field name="name">employee form view</field>
+            <field name="model">employee.office</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group string="Personal data">
+                                <field name="team_id" options="{'color_field': 'color', 'no_create_edit': True ,'no_open': True, 'no_create': True}"/>
+                            </group>
+                            <group string="Other data">
+                                <field name="is_accepted" attrs="{'invisible' : [('interview_time' , '!=' , False)]}" widget="boolean_toggle"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="employee_tree" model="ir.ui.view">
+            <field name="name">employee tree view</field>
+            <field name="model">employee.office</field>
+            <field name="arch" type="xml">
+                <tree decoration-danger="gender=='male'" multi_edit="1" default_order="sequence,id desc">
+                    <!--                    لو عايز الريكورد كله بفيلداته لونه يتغير في الtree هحط ال decoration بتاعه في ال tree مش في ال field -->
+
+                    <field name="sequence" widget="handle"/>
+                    widget=handle معناها انه هيرتب الريكوردات من صفر وطالع علي حسب مكان الريكورد
+                    <button name="set_accepted" type="object"
+                            attrs="{'invisible' : [('state' , '!=' , 'interviewing')]}"
+                            class="fa fa-check-square btn-success" title="sit accept"/>
+
+                    <button name="set_rejected" type="object"
+                            attrs="{'invisible' : [('state' , '!=' , 'interviewing')]}"
+                            class="fa fa-close btn-danger" title="sit reject"/> <!-- get fonts from website fontawesome.com  class="fonts name "   -->
+
+                </tree>
+            </field>
+        </record>
+
+        <!-- search view -->
+        <record id="employee_search" model="ir.ui.view">
+            <field name="name">employee search view</field>
+            <field name="model">employee.office</field>
+            <field name="arch" type="xml">
+                <search>
+                    <!-- for searching  -->
+                    <field name="name" string="lawyer"
+                           filter_domain="['|','|' , ('name', 'ilike', self), ('age', 'ilike', self), ('country', 'ilike', self) ]"/>
+                    <field name="age"/>
+                    <field name="country"/>
+                    <field name="progress"/>
+
+                    <!-- for filtering-->
+                    <filter name="filter_male" string="Male" domain="[('gender' , '=' , 'male')]"/>
+                    <filter name="filter_female" string="Female" domain="[('gender' , '=' , 'female')]"/>
+                    <separator/> ====>      <!--  for 'and' operation لتحقيق الشرطين معا-->
+                    <filter name="filter_young" string="Young " domain="[('age' , '&lt;' , 25)]"/>
+                    <separator/>
+                    <filter name="filter_archive" string="Archive " domain="[('active' , '=' , False )]"/>
+                    <filter name="filter_create_date" string="Today Records " domain="[('create_date' , '>=' , context_today().strftime('%y-%m-%d') )]"/>
+                    <filter name="filter_seven_days" string="This Week Records" domain="[('create_date' , '>=' , (context_today() + datetime.timedelta(-6)).strftime('%y-%m-%d') )]"/>
+
+                    <!--  for grouping by -->
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_gender" string="Gender" context="{'group_by' : 'gender'}"/>
+                    </group>
+                    <!--  for search panel list --> <!--  search about searchpanel in odoo and get syntax-->
+                    <searchpanel>
+                        <field name="gender" string="Gender" icon="fa-users" select="multi" enable_counters="1"/>
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+
+
+        <!-- calendar view -->
+        <record model="ir.ui.view" id="employee_calendar_view">
+            <field name="name">employee.calendar</field>
+            <field name="model">employee.office</field>
+            <field name="arch" type="xml">
+                <calendar string="employee Calendar" date_start="start_date"
+                          date_stop="end_date"
+                         form_view_id="%(law_office.employee_form)d"
+                          event_open_popup="True"
+                          event_limit="5"
+                          mode="month"
+                          date_delay="duration"
+                          color="customer_ids">
+                    <field name="name"/>
+                    <field name="state" invisible="1" filters="1"/>
+                </calendar>
+            </field>
+        </record>
+
+
+
+        <!-- activity view -->
+        <record id="fleet_vehicle_log_contract_view_activity" model="ir.ui.view">
+        <field name="name">fleet.vehicle.log.contract.activity</field>
+        <field name="model">fleet.vehicle.log.contract</field>
+        <field name="arch" type="xml">
+            <activity string="Vehicles Contracts">
+                <field name="purchaser_id"/>
+                <templates>
+                    <div t-name="activity-box">
+                        <img t-att-src="activity_image('res.partner', 'image_128', record.purchaser_id.raw_value)" t-att-title="record.purchaser_id.value" t-att-alt="record.purchaser_id.value"/>
+                        <div>
+                            <field name="vehicle_id" display="full"/>
+                            <field name="cost_subtype_id" muted="1" display="full"/>
+                        </div>
+                    </div>
+                </templates>
+            </activity>
+        </field>
+    </record>
+
+
+        <!-- graph view -->
+        <record model="ir.ui.view" id="employee_graph_view">
+            <field name="name">employee.graph</field>
+            <field name="model">employee.office</field>
+            <field name="arch" type="xml">
+                <graph string="Numbers">
+                    <field name="team_id"/>
+                    <field name="employees_count" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+
+        <!-- pivot view -->
+        <record model="ir.ui.view" id="employee_pivot_view">
+            <field name="name">employee.pivot</field>
+            <field name="model">employee.office</field>
+            <field name="arch" type="xml">
+                <pivot string="Numbers">
+                    <field name="team_id"/>
+                    <field name="employees_count" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+
+        <!-- kanban view -->
+        <record model="ir.ui.view" id="view_employee_kanban">
+            <field name="name">employee.kanban</field>
+            <field name="model">employee.office</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="team_id">
+                    <field name="color"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div
+                                    t-attf-class="oe_kanban_color_{{kanban_getcolor(record.color.raw_value)}}
+                                                  oe_kanban_global_click_edit oe_semantic_html_override
+                                                  oe_kanban_card {{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}}">
+                                <div class="oe_dropdown_kanban">
+                                    <!-- dropdown menu -->
+                                    <div class="oe_dropdown_toggle">
+                                        <i class="fa fa-bars fa-lg" title="kanban view" />
+                                        <ul class="oe_dropdown_menu">
+                                            <li>
+                                                <a type="delete">Delete</a>
+                                            </li>
+                                            <li>
+                                                <ul class="oe_kanban_colorpicker"
+                                                    data-field="color"/>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="oe_clear"/>
+                                </div>
+                                <div t-attf-class="oe_kanban_content">
+                                    <!-- title -->
+                                    Session name:
+                                    <field name="name"/>
+                                    <br/>
+                                    Start date:
+                                    <field name="start_date"/>
+                                    <br/>
+                                    duration:
+                                    <field name="duration"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+        <record id="employee_action" model="ir.actions.act_window">
+            <field name="name">Employees</field>
+            <field name="res_model">employee.office</field>
+            <field name="view_mode">tree,form,calendar,graph,pivot,kanban</field>
+            <field name="context">{}</field>
+            <!-- <field name="context">{'default_gender' : 'female' , 'default_....':'value'}</field> --> <!-- for default value of fields {'default_field name':'value'}-->
+            <!-- <field name="context">{'search_default_filter_male':1 , 'search_default_group_by_gender' :1}</field>   for default search view and group by view -->
+            <field name="domain">[('years_experiences' , '&gt;=' , 5 )]</field>
+        </record>
+
+
+
+
+        <record id="action_account_asset_run" model="ir.actions.server" >
+        <field name="name">Confirm</field>
+        <field name="groups_id" eval="[(4, ref('account.group_account_user'))]"/>
+        <field name="model_id" ref="account_asset.model_account_asset"/>
+        <field name="binding_model_id" ref="account_asset.model_account_asset" />
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    action = records.filtered(lambda asset: asset.state == 'draft').validate()
+        </field>
+    </record>
+
+    </data>
+</odoo>

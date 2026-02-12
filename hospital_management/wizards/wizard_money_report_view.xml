@@ -1,0 +1,40 @@
+<odoo>
+    <data>
+
+        <record id="wizard_money_report" model="ir.ui.view">
+            <field name="name">wizard money</field>
+            <field name="model">wizard.money.report</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="manager_id"/>
+                            <field name="bill_date"/>
+                            <field name="description"/>
+                        </group>
+                        <footer>
+                            <button name="print_money_report" type="object" string="Print" class="oe_highlight" />
+                            <button special="cancel"  string="Discard" class="btn-secondary"/>
+                        </footer>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+        <record id="wizard_money_report_action" model="ir.actions.act_window">
+            <field name="name">wizard money action</field>
+            <field name="res_model">wizard.money.report</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="wizard_money_report"/>
+             <field name="target">new</field>
+        </record>
+
+
+    </data>
+</odoo>
+
+
+

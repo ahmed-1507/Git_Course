@@ -1,0 +1,30 @@
+<odoo>
+    <data>
+        <record id="view_report_employee_form" model="ir.ui.view">
+            <field name="name">view_report_employee_form</field>
+            <field name="model">wizard.employee.report</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="lawyer_id"/>
+                            <field name="gender"/>
+                        </group>
+                         <footer>
+                            <button name="print_employee_report" type="object" string="print report"  class="oe_highlight"/>
+                            <button special="cancel"  string="Discard" class="btn-secondary"/>
+                         </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_report_employee_action" model="ir.actions.act_window">
+            <field name="name">view report employee action</field>
+            <field name="res_model">wizard.employee.report</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_report_employee_form"/>
+             <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="action_report_prescription" model="ir.actions.report">
+            <field name="name">print prescription</field>
+            <field name="model">hospital.prescription</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">hospital_management.prescription_report_template</field>
+            <field name="report_file">hospital_management.prescription_report_template</field>
+            <field name="binding_model_id" ref="model_hospital_prescription"/>
+            <field name="binding_type">report</field>
+            <field name="print_report_name">
+                ('prescription Data - %s' % (object.patient_id.name))
+            </field>
+        </record>
+
+
+        <template id="prescription_report_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div class="oe_structure"/>
+                            <h2 style="text-align:center; margin-bottom:20px;">
+                                Prescription Report
+                            </h2>
+
+                            <div class="row" style="margin-top: 15px;">
+                                <div class="col-6">
+                                    <p>
+                                        <strong>Name:</strong>
+                                        <t t-esc="doc.name"/>
+                                    </p>
+                                    <p>
+                                        <strong>Patient Name :</strong>
+                                        <t t-esc="doc.patient_id.name"/>
+                                    </p>
+                                </div>
+                                <div class="col-6">
+                                    <p>
+                                        <strong>Doctor:</strong>
+                                        <t t-esc="doc.doctor_id.name"/>
+                                    </p>
+                                    <p>
+                                        <strong>Date:</strong>
+                                        <t t-esc="doc.date"/>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <br/>
+                            <br/>
+
+                            <div class="row">
+                                <table class="table table-sm table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align:left;">
+                                                <strong>Medicine Name</strong>
+                                            </th>
+                                            <th style="text-align:left;">
+                                                <strong>Qty</strong>
+                                            </th>
+                                            <th style="text-align:left;">
+                                                <strong>Price Unit</strong>
+                                            </th>
+                                            <th style="text-align:left;">
+                                                <strong>Price Subtotal</strong>
+                                            </th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <t t-foreach="doc.prescription_line_ids" t-as="line">
+                                            <tr>
+                                                <td>
+                                                    <t t-esc="line.medicine_id.name"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="line.qty"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="line.price_unit"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="line.price_subtotal"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row">
+                                <table class="table table-sm table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th width="68%" style="text-align:left;">
+                                                <p>
+                                                    <strong>Total Medicines:</strong>
+                                                    <t t-esc="len(doc.prescription_line_ids)"/>
+                                                </p>
+                                            </th>
+                                            <th width="32%" style="text-align:left;">
+                                                <p>
+                                                    <strong>Total Amount:</strong>
+                                                    <t t-esc="doc.total_amount"/>
+                                                </p>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <div class="row">
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align:left;">
+                                                <strong>Name :</strong>
+                                            </th>
+                                            <th style="text-align:left;">
+                                                <strong>App :</strong>
+                                            </th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <t t-set="prescription_count" t-value="0"/>
+                                        <t t-foreach="prescription_list" t-as="pr">
+                                            <t t-set="prescription_count" t-value="prescription_count + 1"/>
+                                            <tr>
+                                                <td style="text-align:left;">
+                                                    <t t-esc="pr['name']"/>
+                                                </td>
+                                                <td style="text-align:left;">
+                                                    <t t-esc="pr['appointment_id']"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row">
+                                <strong>Total Count of prescriptions : </strong>
+                                <t t-esc="prescription_count"/>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+
+        </template>
+
+    </data>
+</odoo>

@@ -1,0 +1,125 @@
+<odoo>
+    <data>
+
+
+<!--                              <header>-->
+<!--                                    <button name="%(law_office.wizard_action)d" type="action" string="create employee model"-->
+<!--                                            class="oe_highlight"-->
+<!--                                            confirm="Are You Sure To Open This Form ?"-->
+<!--                                            data-hotkey="x"-->
+<!--                                             context="{'default_is_accepted' : True }"/>-->
+                                    <!--confirm =>  for confirmation message-->
+                                    <!-- data-hotkey =>  for fast arrive by clicking    alt + letter   -->
+                                    <!-- context => for default value of field in popup of wizard -->
+                                    <!-- context="{'default_ifield name' : value of field}"-->
+<!--                              </header>-->
+
+
+
+        <!--        for sequence in xml file-->
+
+        <!--        <record id="sequence_payment_supplier_invoice" model="ir.sequence">-->
+        <!--            <field name="name">Payments supplier invoices sequence</field>-->
+        <!--            <field name="code">account.payment.supplier.invoice</field>-->
+        <!--            <field name="prefix">SUPP.OUT/%(range_year)s/</field>-->
+        <!--            <field eval="1" name="number_next"/>-->
+        <!--            <field eval="1" name="number_increment"/>-->
+        <!--            <field eval="True" name="use_date_range"/>-->
+        <!--            <field eval="False" name="company_id"/>-->
+        <!--            <field name="padding">4</field>-->
+        <!--        </record>-->
+        <!--        -->
+
+
+        <!--        for action url from xml-->
+
+        <!--        <record id="action_helpdesk_ctit" model="ir.actions.act_url">-->
+        <!--            <field name="name">Helpdesk CTIT</field>-->
+        <!--            <field name="url">https://helpdesk.ctit.com.sa</field>-->
+        <!--            <field name="target">new</field>-->
+        <!--        </record>-->
+
+
+
+
+        <record id="inherit_sale_form" model="ir.ui.view">
+            <field name="name">inherit sale </field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+<!--                <field name="payment_term_id" position="after">     after/before/attributes/replace/inside     ;-->
+<!--                    <field name="custom_reference"/>-->
+<!--                </field>-->
+
+<!--                    <xpath expr="//field[@name='partner_id']" position="after">-->
+<!--                        <field name="birthdate"/>-->
+<!--                    </xpath>-->
+
+<!--                    <xpath expr="//field[@name='birthdate']" position="after">-->
+<!--                        <field name="age"/>-->
+<!--                    </xpath>-->
+
+<!--                <field name="payment_term_id" position="attributes">-->
+<!--                    <attribute name="required">True</attribute>-->
+<!--                </field>-->
+
+
+
+<!--                    <xpath expr="//field[@name='payment_term_id']" position="attribute">-->
+<!--                        <attribute name="required">True</attribute>-->
+<!--                    </xpath>-->
+
+<!--                    <xpath expr="//notebook" position="inside">-->
+<!--                        <page string="New Page">-->
+<!--                            <group>-->
+<!--                                <field name="custom_reference"/>-->
+<!--                            </group>-->
+<!--                        </page>-->
+<!--                    </xpath>-->
+                <!--        ===========================================================================================-->
+<!--                <field name="partner_id" position="replace">    &lt;!&ndash;                كده سيتم استبدال الفيلد&ndash;&gt;-->
+
+<!--                        <field name="birthdate"/>-->
+<!--                </field>-->
+<!--                -->
+<!--                 <xpath expr="//field[@name='partner_id']"  position="replace">    &lt;!&ndash;              كده سيتم استبدال الفيلد  &ndash;&gt;-->
+
+<!--                             <field name="age"/>         -->
+<!--                </xpath>-->
+
+                <!--        ===========================================================================================-->
+
+<!--                 <field name="partner_id" position="replace"/>       &lt;!&ndash;   كده سيتم حذف الفيلد &ndash;&gt;-->
+<!--                -->
+<!--                <xpath expr="//field[@name='age']" position="replace"/>   &lt;!&ndash;   كده سيتم حذف الفيلد &ndash;&gt;-->
+
+                <!--        ===========================================================================================-->
+
+
+<!--                 <field name="partner_id" position="attributes">-->
+<!--                    <attribute name="required">1</attribute>-->
+<!--                    <attribute name="readonly">1</attribute>-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                    <attribute name="domain">[]</attribute>-->
+<!--                    <attribute name="attrs">[]</attribute>-->
+<!--                    <attribute name="class"> </attribute>-->
+<!--                    <attribute name="widget"> </attribute>-->
+<!--                </field>-->
+<!--                -->
+<!--                -->
+<!--                <xpath expr="//field[@name='partner_id']" position="attributes">-->
+<!--                    <attribute name="required">1</attribute>-->
+<!--                    <attribute name="readonly">1</attribute>-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                    <attribute name="domain">[]</attribute>-->
+<!--                    <attribute name="attrs">[]</attribute>-->
+<!--                    <attribute name="class"> </attribute>-->
+<!--                    <attribute name="widget"> </attribute>-->
+<!--                </xpath>-->
+
+
+            </field>
+        </record>
+    </data>
+</odoo>

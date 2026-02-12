@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+<!--    <data noupdate="1">-->  ودي معناها ان الريكوردات هتتنشئ عادي اول مره اول م اعمل ابجريد للمديول ولكن من بعدها اي تعديل او اضافة فيلدات ف الريكوردات اللي هنا في ملف ال xmlمش هتسمع في شاشة اودوو
+        وساعتها لو روحت للشاشة دي وجبت ال view metadata هلاقي ان فيلد ال no update ب تروو يعني اليوزر مش هيقدر يزود اي داتا في الريكورد ده من الباك اند
+        طيب لو عايز ازود حاجه اعلم ايه ؟
+          اعمل ال noupdate=0 ولازم بعدها اروح لاودوو sittings ثم technical ثم external identifier وابحث بال xml id  بتاع الريكورد اللي عايز اعدل فيه وادخل اعمل الفيلد اللي اسمه non updatable اعمله false
+        لانه طول ما الفيلد ده تروو مش هعرف اعدل علي الريكورد
+
+        <!--    how to create a default records on model-->
+        <record id="employee_22" model="employee.office">
+            <field name="name">esraa</field>
+            <field name="email">esraa@test</field>
+            <field name="age">25</field>
+            <field name="phone">60-16-13 31926819</field>
+        </record>
+
+
+        <record id="employee_23" model="employee.office">
+            <field name="name">amgad</field>
+            <field name="email">amgad@test</field>
+            <field name="age">20</field>
+            <field name="phone">60-16-13 3125687</field>
+        </record>
+        =====================================================================
+        لو عايز اضيف فيلد many2many ف ريكورد هتبقي كده
+
+        <record id="employee_30" model="employee.office">
+            <field name="name">mona</field>
+            <field name="email">mona@test</field>
+            <field name="age">20</field>
+            <field name="phone">60-16-13 3125687</field>
+            خستخدم كوماند 0و6 عشان اعمل افررايد علي ال ids بتاعت المهارات اللي عملتها ف ملف ال csv
+            <field name="skills_ids" eval="[(6,0, [ ref('skill_1'),ref('skill_2'),ref('skill_3')]) ]"/>
+        </record>
+
+
+
+
+    </data>
+</odoo>

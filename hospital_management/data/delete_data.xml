@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <delete id="law_office.employee_22" model="employee.office"/>
+        <delete id="law_office.employee_88" model="manager.office"/>
+
+        <delete id="law_office.customer_menu"  model="ir.ui.menu"/>
+        <delete id="law_office.customer_form"  model="ir.ui.view"/>
+وهكذا بقي اي ريكزرد ليه external id هتحطه هنا وتضيف الموديل اللي موجود فيه وتمسح
+
+
+
+        لو عايز تمسح مجموعه من الريكوردات بناءا علي دومين معين
+        <delete model="employee.office" search="[('name','ilike','ahmed')]"/>
+
+
+
+
+
+
+
+    </data>
+</odoo>

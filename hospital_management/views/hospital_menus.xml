@@ -1,0 +1,25 @@
+<odoo>
+    <data>
+        <menuitem id="hospital_management_root_menu" name="Hospital Management"
+                  sequence="30"
+                  web_icon="hospital_management,static/description/download.png">
+
+            <menuitem id="hospital_doctor_menu" name="Doctors" sequence="10">
+                <menuitem id="hospital_doctor_sub_menu" name="Doctors" action="hospital_doctor_view_action"/>
+            </menuitem>
+
+            <menuitem id="hospital_patient_menu" name="Patients" sequence="20">
+                <menuitem id="hospital_patient_sub_menu" name="Patients" action="hospital_patient_view_action"/>
+            </menuitem>
+
+            <menuitem id="hospital_other_menu" name="Others" sequence="30">
+                <menuitem id="hospital_prescription_menu" name="Prescription" action="hospital_prescription_view_action"/>
+                <menuitem id="hospital_appointment_menu" name="Appointment" action="hospital_appointment_view_action"/>
+                <menuitem id="hospital_medicine_menu" name="Medicine" action="hospital_medicine_view_action"/>
+            </menuitem>
+
+        </menuitem>
+
+
+    </data>
+</odoo>

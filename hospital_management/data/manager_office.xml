@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+
+ال demo records عباره عن ريكوردات بتتنشئ تلقائي اول ما اعمل انستال للمديول يعني نفس فكرة فايل الداتا
+        ولكن لازم لما اعمل ريستور للداتا بيز اعمل restore demo عشان تتنشئ تلقائي
+        لازم ف ملف ال manifest تتحط لوحدها ف key اسمه demo عشان اودوو يفهمها
+        الريكوردات دي لو عملت لواحد فيهم view metadata هتلاقيه فيلد ال non updatable ب true تلقائي عشان دي مينفعش تعدل ف ريكورد موجود بالفعل فالتعديل مش هيسمع معايا
+         لكن لو هنشئ ريكورد اول مره حتي لو في نفس الفايل ف اول م اعمل ابجريد للمديول هيتنشئ عادي مش لازم اعمله امسحه واسطبه من الاول
+
+        <!--    how to create a default records on model-->
+        <record id="manager_11" model="manager.office">
+            <field name="name">ahmed</field>
+            <field name="email">ahmed@test</field>
+            <field name="age">25</field>
+            <field name="phone">60-16-13 31926819</field>
+            <!--            طريقة اضافو فيلد many2one بتبتقي بالشكل ده وباخد ال id بتاع الريكورد للموظف اللي هضيفه-->
+<!--            employee_22  الريكورد ده هيتنشئ في فايل عادي بس الفايل اتمسح -->
+            <field name="employee_idd" ref="law_office.employee_22"/>
+        </record>
+
+
+        <record id="manager_12" model="manager.office">
+            <field name="name">mohamed</field>
+            <field name="email">moahmed@test</field>
+            <field name="age">20</field>
+            <field name="phone">60-16-13 3125687</field>
+            <!--            طريقة اضافو فيلد many2one بتبتقي بالشكل ده وباخد ال id بتاع الريكورد للموظف اللي هضيفه-->
+            <field name="employee_idd" ref="law_office.employee_23"/>
+        </record>
+
+========================================================================================================================
+        <!--        طريقة اضافة فيلد one2many للريكورد . انا عندي فيلد وان تو ميني من المدير للموظف فاهعمل ريكورد واحد للمدير و3 ريكوردات للموظفين واحط فيهم فيلد ال team_id بال id بتاع نفس المدير  -->
+
+        <record id="manager_15" model="manager.office">
+            <field name="name">ahmed</field>
+            <field name="email">ahmed@test</field>
+            <field name="age">25</field>
+        </record>
+
+        <record id="employee_77" model="employee.office">
+            <field name="name">amgad</field>
+            <field name="email">amgad@test</field>
+            <field name="age">20</field>
+            <field name="phone">60-16-13 3125687</field>
+            <field name="team_id" ref="law_office.manager_15"/>
+
+        </record>
+
+        <record id="employee_88" model="employee.office">
+            <field name="name">amgad</field>
+            <field name="email">amgad@test</field>
+            <field name="age">20</field>
+            <field name="phone">60-16-13 3125687</field>
+            <field name="team_id" ref="law_office.manager_15"/>
+
+        </record>
+
+        <record id="employee_90" model="employee.office">
+            <field name="name">amgad</field>
+            <field name="email">amgad@test</field>
+            <field name="age">20</field>
+            <field name="phone">60-16-13 3125687</field>
+            <field name="team_id" ref="law_office.manager_15"/>
+
+        </record>
+=======================================================================================================
+        الطريقه التانبه لاضافة عناصر داخل فيلد وان تو ميني
+<!--        طيب لو عايز اضيف فيلد one2many عليطول في ريكورد المدير وانشئ من خلاله كذا موظف ف وقت واحد . هعملها باستخدام الكوماند 0و0-->
+
+        <record id="manager_999" model="manager.office">
+            <field name="name">asmaa</field>
+            <field name="email">asmaa@test</field>
+            <field name="age">50</field>
+            <field name="phone">60-16-13 3125687</field>
+            <field name="team_ids" eval="[(0,0,{'name':'ahmed' , 'age':25}) , (0,0,{'name':'amira' , 'age':22})]"/>
+            وكده المدير نفسه هقدر الاقيله external id لما اروحله واعمل view metadata لاني انا اللي انشاته وعملتله id خاص بيه
+            اما احمد واميره الموظفين اللي عملتهم ف الفيلد ال وان تو ميني لو روحتلهم وعكلت view metadata مش هلاقيلهم external id لان السيستم هو اللي انشاهم عن طريق الكومان 0و0
+        </record>
+        =======================================================================================================
+
+        how to call fuvctions in data xml files
+
+        <function model="manager.office" name="_change_manager_roll_name"
+        eval="('seq' ,)"/>
+
+
+    </data>
+</odoo>

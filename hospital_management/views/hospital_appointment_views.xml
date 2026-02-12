@@ -1,0 +1,100 @@
+<odoo>
+    <data>
+
+        <record id="hospital_appointment_view_form" model="ir.ui.view">
+            <field name="name">hospital.appointment.view.form</field>
+            <field name="model">hospital.appointment</field>
+            <field name="arch" type="xml">
+                <form>
+
+
+                    <widget name="web_ribbon" title="Done" bg_color="text-bg-success" invisible="state != 'done'"/>
+                    <widget name="web_ribbon" title="Cancelled" bg_color="text-bg-danger"
+                            invisible="state != 'cancelled'"/>
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done"/>
+
+                        <button name="set_to_draft" type="object" string="Set To Draft" invisible="state == 'draft'"/>
+                        <button name="action_confirm" type="object" string="Confirm" invisible="state != 'draft'"/>
+
+                        <button name="action_done" type="object" string="Mark As Done"
+                                invisible="state != 'confirmed'"/>
+
+                        <button name="action_cancel" type="object" string="Cancel" invisible="state == 'cancelled'"/>
+                        <button name="print_method" type="object" string="Test"/>
+                    </header>
+
+                    <div class="alert alert-info text-center o_form_header" invisible="not is_today_appointment" role="alert">
+                        <a class="close" data-bs-dismiss="alert" href="#">x</a>
+                        <div>
+                            <strong>Today Is Your Appointment !</strong>
+                        </div>
+                        <div> Git Will Soon
+                            <field name="patient_id" required="0" readonly="1"/>
+                        </div>
+                    </div>
+
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="create_uid" widget="many2one_avatar"/>
+                                <field name="doctor_id" />
+                                <field name="patient_id" widget="selection"/>
+                                <field name="start_time"/>
+                                <field name="end_time"/>
+                                <field name="is_today_appointment" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="notes" groups="base.group_no_one"/> <!-- معناها ان الفيلد ده هيظهر فقط في حالة ان اليوزر مفعل ال debuger mode-->
+                                <field name="ref"/>
+                                <field name="active" invisible="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Progress">
+                               <field name="progress" widget="gauge"  options="{'max_field': 'maximum_rate','style': 'width:100px; height: 80px;'}" />
+                               <!--   you can also use  widget="percentpie"-->
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <!--Chatter view-->
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="hospital_appointment_view_tree" model="ir.ui.view">
+            <field name="name">hospital.appointment.view.tree</field>
+            <field name="model">hospital.appointment</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="doctor_id"/>
+                    <field name="patient_id"/>
+                    <field name="progress" widget="progressbar" />
+                </tree>
+            </field>
+
+
+        </record>
+        <record id="hospital_appointment_view_action" model="ir.actions.act_window">
+            <field name="name">hospital appointment action</field>
+            <field name="res_model">hospital.appointment</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new appointment Record, the first step of a new appointment!
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>
+
+        <!--عشان اخفي فيلد من فورم باستخدام ال context هروح لل action record بتاع الفورم او كونتيكست جوه زرار برضو واضيف ال  {hide_fieldName':1'}=context -->
+        <!-- وبعدين اروح للفورم اللي فيها الفيلد ده واضيف جوه الفيلد  invisible="context.get('hide_fieldName')-->

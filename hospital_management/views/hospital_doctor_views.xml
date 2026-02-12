@@ -1,0 +1,151 @@
+<odoo>
+    <data>
+
+        <record id="hospital_doctor_view_form" model="ir.ui.view">
+            <field name="name">hospital.doctor.view.form</field>
+            <field name="model">hospital.doctor</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <field name="image" widget="image" class="oe_avatar"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="priority" widget="priority" class="mr-3"/>
+                            </h1>
+                            <h1>
+                                <label for="name" string="Name" class="oe_edit_only"/>
+                                <!--                                class="oe_edit_only"     بتخلي كلمة الاسم تظهر اثنا التعديل في الريكورد واول ما احفظ البيانات تختفي-->
+                                <field name="name" nolabel="1"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group string="Personal data">
+                                <field name="birthdate"/>
+                                <field name="age" force_save="1"/>
+                                <field name="country"/>
+                                <field name="gender" widget="radio"/>
+                                <field name="specialization" default_focus="1"/>
+                                <field name="marital_status"/>
+
+                            </group>
+                            <group string="Contact Data">
+                                <field name="email" widget="email" placeholder="example@gmail.com"/>
+                                <field name="phone" widget="phone"/>
+                                <field name="website" widget="url" placeholder="www.example.com"/>
+                                <field name="documents" filename="document_name"/>
+                                <field name="document_name" invisible="1"/>
+                                <field name="available_days_ids" widget="many2many_tags"/>
+                            </group>
+                            <!--                            <group string="Other data">-->
+                            <!--                                <field name="age"/>-->
+                            <!--                                <field name="computed_age"/>-->
+                            <!--                                <field name="marital_status"/>-->
+                            <!--                                <field name="usersss_id"-->
+                            <!--                                       widget="many2one_avatar"/>  &lt;!&ndash;  to show users avatar beside his name&ndash;&gt;-->
+
+
+                            <!--                            </group>-->
+                        </group>
+
+
+                        <notebook>
+                            <page string="Appointment Lines" name="appointment_ids">
+                                <field
+                                        name="appointment_ids"
+                                        widget="section_and_note_one2many"
+                                        mode="tree">
+                                    <form>
+                                        <field name="doctor_id"/>
+                                        <field name="patient_id"/>
+                                        <field name="state"/>
+                                    </form>
+                                    <tree editable="bottom">
+                                        <field name="app_no"/>
+                                        <field name="doctor_id"/>
+                                        <field name="patient_id"/>
+                                        <field name="state"/>
+                                    </tree>
+
+                                </field>
+                            </page>
+
+                            <page string="Description">
+                                <!--                                <field name="description" placeholder="Enter Your Text"/>-->
+                            </page>
+                            <page string="Prescription">
+                                <!--                                <field name="prescription" placeholder="Enter Your HTML Text"-->
+                                <!--                                       options="{'collaborative' : 'true' , 'resizable' : 'true' , 'codeview':'true'}"/>-->
+                                <!--  collaborative =>  to give access to many users to make edit on Html field -->
+                                <!--  resizable =>  to control size and height of text border -->
+                                <!--  codeview to show the html code of the text   -->
+                            </page>
+                        </notebook>
+                    </sheet>
+
+                    <!--Chatter view-->
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+
+        <!--            decoration-muted   ===> normal-->
+        <!--            decoration-warning ===> orange-->
+        <!--            decoration-info    ===> light blue-->
+        <!--            decoration-success ===> green-->
+        <!--            decoration-danger  ===> red -->
+
+        <record id="hospital_doctor_view_tree" model="ir.ui.view">
+            <field name="name">hospital.doctor.view.tree</field>
+            <field name="model">hospital.doctor</field>
+            <field name="arch" type="xml">
+                <tree>   <!--    export_xlsx="0"  create  لاخفاء زرار التحميل اللي جنب ال  -->
+                    <field name="name" decoration-bf="1" decoration-it="1"/>
+                    <field name="age" avg="Average" decoration-bf="1"/>
+                    <field name="gender" widget="badge" decoration-danger="gender=='male'" decoration-info="gender=='female'"/>
+                    <!--                    <field name="activity_ids" widget="list_activity"/>-->
+                    <field name="email" optional="hide"/>
+                    <!--                    <field name="computed_age" optional="hide"/>-->
+                    <!--                    <field name="usersss_id"-->
+                    <!--                           widget="many2one_avatar_user"/> &lt;!&ndash;  to show users avatar beside his name and text him by clicking on him&ndash;&gt;-->
+
+                    <!--                    <field name="marital_status" optional="hide"/>-->
+                    <!--                    optional="hide" ==> هيخليه يختفي في قايمه علي جنب واظهرهم وقت الحاجه ليهم-->
+
+                    <!--                    <field name=" usersss_id " widget="many2one_avatar_user"/>-->
+
+
+                    <!--                    <groupby can be applied for only many2one fields in odoo-->
+                    <!--                      والزراير دي مش هتظهر الا لما اعمل جروب باي بنفس الفيلد ده بس -->
+                    <!--                    <groupby name="employee_idd" >-->
+                    <!--                        <button name="action_test" type="object" string="click"/>-->
+                    <!--                        لازم الفانكشن تتعمل في الموديل اللي معمول منه علاقة الفيلد الميني تو ون اللي حطيته في الجروب باي-->
+                    <!--                        <button name="edit" type="edit" string="Edit"/>-->
+                    <!--                    </groupby>-->
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="hospital_doctor_view_action" model="ir.actions.act_window">
+            <field name="name">Hospital Doctor Action</field>
+            <field name="res_model">hospital.doctor</field>
+            <field name="view_mode">tree,form</field>
+            <!--        <field name="search_view_id" ref="sale_order_view_search_inherit_sale"/>-->
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Doctor Record, the first step of a new Employee!
+                </p>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>
